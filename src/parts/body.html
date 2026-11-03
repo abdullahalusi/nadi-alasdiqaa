@@ -24,6 +24,7 @@
       <button class="tile rl" id="tile-rl"><span class="tag">🎡 حظ</span><div class="art" id="rlArt"></div><h3>روليت</h3><p>عجلة أوروبية، راهنوا معاً على نفس الدورة</p></button>
       <button class="tile cnt" id="tile-cn"><span class="tag">🕵️ كلمات</span><div class="art"><div class="cnart" id="cnArt"></div></div><h3>كود نيمز</h3><p>فريقان، قائد يلمّح بكلمة، وأكثر من 670 كلمة عربية</p></button>
       <button class="tile tbg" id="tile-bg"><span class="tag">🏙️ عقارات</span><div class="art"><div class="bgart" id="bgArt"></div></div><h3>لعبة بغداد</h3><p>اشترِ أحياء بغداد من مدينة الصدر إلى الجادرية</p></button>
+      <button class="tile tsh" id="tile-sh"><span class="tag">🎭 أدوار سرية</span><div class="art"><div class="shart" id="shArt"></div></div><h3>سيكرت هتلر</h3><p>ليبراليون ضد فاشيين، وزعيم مختبئ بينكم. من تصدّق؟</p></button>
       <button class="tile dm" id="tile-dm"><span class="tag">🁫 أحجار</span><div class="art"><div class="dmart" id="dmArt"></div></div><h3>دومينو</h3><p>سحب أو بلوك، من 2 إلى 4 لاعبين</p></button>
     </div>
   </div>
@@ -134,6 +135,23 @@
           <div class="panel bgpanel"><h4>👥 اللاعبون</h4><div id="bgPlayers"></div></div>
           <div class="panel bgpanel"><h4>🏠 أملاكي</h4><div id="bgMine"></div></div>
           <div class="panel bgpanel"><h4>📜 آخر الأحداث</h4><div id="bgLog" class="bglog"></div></div>
+        </div>
+      </div>
+    </div>
+    <!-- SECRET HITLER -->
+    <div class="stage" id="st-sh">
+      <div class="sh-wrap">
+        <div class="sh-boards">
+          <div class="shboard lib"><div class="bt">🕊️ القوانين الليبرالية</div><div class="slots" id="shLib"></div></div>
+          <div class="shboard fas"><div class="bt">☠️ القوانين الفاشية</div><div class="slots" id="shFas"></div><div class="hz" id="shHitlerZone">⚠️ منطقة الخطر: انتخاب هتلر مستشاراً الآن يعني فوز الفاشيين</div></div>
+          <div class="shtrack" id="shTrack"></div>
+        </div>
+        <div class="sh-msg" id="shMsg"></div>
+        <div class="sh-hand" id="shHand"></div>
+        <div class="sh-seats" id="shSeats"></div>
+        <div class="sh-bottom">
+          <div class="sh-chatbox" id="shChatBox"><div class="sh-chat" id="shChat"></div><form id="shChatForm"><input id="shChatIn" maxlength="70" autocomplete="off" placeholder="اكتب اتهامك أو دفاعك..."><button class="btn gold sm" type="submit">إرسال</button></form></div>
+          <div class="sh-log" id="shLog"></div>
         </div>
       </div>
     </div>

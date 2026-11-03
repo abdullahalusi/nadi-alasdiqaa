@@ -1,6 +1,6 @@
 /* ================== THEMES ================== */
-const THEME_SYMS = { menu: ['♠', '♥', '♦', '♣'], bj: ['♠', '21', '♥', '♣', '♦', 'A'], pk: ['♠', '♦', '♣', '♥', 'K', '🂡'], rl: ['0', '17', '32', '7', '36', '◉'], dm: ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'], cn: ['🕵️', '🔍', '❓', '💀', 'A', '؟'], bg: ['🌴', '🏠', '🎲', '🏢', '🚌', '💰'] };
-const THEME_COLS = { menu: ['#ffffff', '#ff5a6a'], bj: ['#bfffd9', '#ff8a9a'], pk: ['#ffd479', '#ff4d6a'], rl: ['#ffd479', '#9fc0ff'], dm: ['#fff1d6', '#ffcf8a'], cn: ['#ff6b6b', '#6fb3ff'], bg: ['#ffd479', '#9fe3d0'] };
+const THEME_SYMS = { menu: ['♠', '♥', '♦', '♣'], bj: ['♠', '21', '♥', '♣', '♦', 'A'], pk: ['♠', '♦', '♣', '♥', 'K', '🂡'], rl: ['0', '17', '32', '7', '36', '◉'], dm: ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'], cn: ['🕵️', '🔍', '❓', '💀', 'A', '؟'], bg: ['🌴', '🏠', '🎲', '🏢', '🚌', '💰'], sh: ['🗳️', '📜', '🎭', '🕯️', '⚖️', '🔍'] };
+const THEME_COLS = { menu: ['#ffffff', '#ff5a6a'], bj: ['#bfffd9', '#ff8a9a'], pk: ['#ffd479', '#ff4d6a'], rl: ['#ffd479', '#9fc0ff'], dm: ['#fff1d6', '#ffcf8a'], cn: ['#ff6b6b', '#6fb3ff'], bg: ['#ffd479', '#9fe3d0'], sh: ['#ff6b5b', '#8fb8ff'] };
 function setTheme(t) {
   if (document.body.dataset.theme === t) return;
   document.body.dataset.theme = t;
@@ -10,8 +10,8 @@ function setTheme(t) {
 
 /* ================== GAME REGISTRY & CONFIG ================== */
 const GAMES = {};
-const GAME_KEYS = ['bj', 'pk', 'rl', 'dm', 'cn', 'bg'];
-const CODE_RE = /^(bj|pk|rl|dm|cn|bg)-[a-z0-9]{3,12}$/;
+const GAME_KEYS = ['bj', 'pk', 'rl', 'dm', 'cn', 'bg', 'sh'];
+const CODE_RE = /^(bj|pk|rl|dm|cn|bg|sh)-[a-z0-9]{3,12}$/;
 function cfgDefault(g) { const o = {}; GAMES[g].cfg.forEach(f => o[f.k] = f.d); return o; }
 function cfgClean(g, c) { c = c || {}; const o = {}; GAMES[g].cfg.forEach(f => { let v = Math.floor(+c[f.k]); if (!isFinite(v)) v = f.d; o[f.k] = Math.min(f.hi, Math.max(f.lo, v)); }); return o; }
 function buildCfgFields(box, g, cfg, onChange) {
