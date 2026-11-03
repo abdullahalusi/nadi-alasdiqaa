@@ -14,35 +14,31 @@
 | `server.js` | الخادم: يعرض الموقع ويربط اللاعبين ببعض (لا يحتاج مكتبات) |
 | `public/index.html` | اللعبة كاملة (الرسوم والقوانين والواجهة) |
 | `package.json` | معلومات تشغيل المشروع |
-| `render.yaml` | إعدادات جاهزة للرفع على Render |
+| `render.yaml` | إعدادات بديلة للرفع على Render |
+| `wrangler.jsonc` و`worker/` | النشر على Cloudflare (الطريقة المعتمدة) |
+| `src/` | ملفات المصدر، و`public/index.html` يُبنى منها بالأمر `python3 src/build.py` |
 
 ---
 
-## 🚀 الرفع على الإنترنت مجاناً (مرة واحدة فقط، حوالي 10 دقائق)
+## 🚀 الاستضافة المجانية: Cloudflare (بدون بطاقة)
 
-### الخطوة 1: ارفع الملفات على GitHub
-1. أنشئ حساباً مجانياً على **github.com**.
-2. اضغط **+** في الأعلى ← **New repository**.
-3. اكتب اسماً مثل `nadi-alasdiqaa`، واختر **Public**، ثم **Create repository**.
-4. في الصفحة الجديدة اضغط **uploading an existing file**.
-5. اسحب **كل الملفات والمجلدات** من داخل هذا المجلد (`server.js` و`package.json` و`render.yaml` و`README.md` ومجلد `public`) وأفلتها هناك.
-6. اضغط **Commit changes**.
+المشروع جاهز للنشر على **Cloudflare Workers** المجاني:
+- `wrangler.jsonc`: إعدادات النشر.
+- `worker/index.js`: خادم اللعب الجماعي.
 
-> ⚠️ تأكد أن `index.html` موجود داخل مجلد اسمه `public` في GitHub.
+**طريقة النشر (مرة واحدة):**
+1. أنشئ حساباً مجانياً على **dash.cloudflare.com**.
+2. من القائمة اختر **Workers & Pages** ← **Create** ← **Import a repository**.
+3. اربط حساب GitHub واختر المستودع `nadi-alasdiqaa`.
+4. اترك الإعدادات كما هي (أمر النشر: `npx wrangler deploy`) ثم اضغط **Deploy**.
+5. رابط اللعبة سيكون مثل: `https://nadi-alasdiqaa.اسمك.workers.dev`
 
-### الخطوة 2: شغّلها على Render
-1. أنشئ حساباً مجانياً على **render.com**، والأسهل أن تسجّل دخولك بحساب GitHub نفسه.
-2. اضغط **New** ← **Web Service**.
-3. اختر المستودع `nadi-alasdiqaa` الذي أنشأته.
-4. اضبط الإعدادات:
-   - **Language / Runtime:** `Node`
-   - **Build Command:** `npm install`
-   - **Start Command:** `node server.js`
-   - **Instance Type:** **Free**
-5. اضغط **Deploy Web Service** وانتظر حتى تظهر كلمة **Live** (دقيقة أو دقيقتان).
-6. سيظهر رابطك في الأعلى، مثل: `https://nadi-alasdiqaa.onrender.com`
+كل تحديث يُرفع إلى المستودع يُنشر تلقائياً.
 
-🎉 هذا هو رابط اللعبة! أرسله لأصدقائك، ويدخلونها مباشرة دون أي حساب.
+> الخطة المجانية لا تنام أبداً، ولها حد يومي لعدد الرسائل (100 ألف يومياً) يكفي لسهرات الأصدقاء.
+
+### بديل: Render (يطلب بطاقة للتحقق)
+`server.js` خادم Node.js مستقل يعمل على Render أو أي استضافة Node. أمر التشغيل: `node server.js`.
 
 ---
 
@@ -51,7 +47,7 @@
 **الطريقة الأولى (يدوياً):**
 1. في GitHub افتح مجلد `public`، ثم اضغط **Add file** ← **Upload files**.
 2. ارفع ملف `index.html` الجديد الذي يعطيك إياه Claude، ثم اضغط **Commit changes**.
-3. Render يحدّث الموقع تلقائياً خلال دقيقة أو دقيقتين.
+3. الموقع يتحدّث تلقائياً خلال دقيقة أو دقيقتين.
 
 **الطريقة الثانية (Claude يحدّثها بنفسه):**
 اربط حساب GitHub بـ Claude من إعدادات claude.ai ← Connectors ← GitHub، ثم قل لـ Claude في أي محادثة:
