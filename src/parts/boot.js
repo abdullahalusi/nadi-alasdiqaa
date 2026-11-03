@@ -10,12 +10,14 @@
   const ba = $('#bgArt'); const cols = ['#8b5a2b', '#7dd3fc', '#f472b6', '#fb923c', '#ef4444', '#facc15', '#22c55e', '#1e3a8a']; for (let i = 0; i < 16; i++) { const r = i < 5 ? 1 : i < 8 ? i - 3 : i < 13 ? 5 : 16 - i + 1; const c = i < 5 ? i + 1 : i < 8 ? 5 : i < 13 ? 13 - i : 1; const d = el('div', 'bam'); d.style.gridRow = r; d.style.gridColumn = c; d.style.borderTop = '5px solid ' + cols[i % 8]; ba.appendChild(d); } const ctr = el('div', 'bac', 'بغداد<span>🎲🎲</span>'); ba.appendChild(ctr);
   const sa = $('#shArt'); sa.appendChild(shPolicy('L')); sa.appendChild(shPolicy('F')); const bj = el('div', 'shballots', '<span class="ja">نعم</span><span class="nein">لا</span>'); sa.appendChild(bj);
   $('#shChatForm').addEventListener('submit', e => { e.preventDefault(); const i = $('#shChatIn'); const v = shClean(i.value); if (!v) return; myAct({ t: 'chat', v }); i.value = ''; });
+  $('#wwArt').innerHTML = '<div class="wmoon"></div><div class="wwolf">🐺</div><div class="wvil">🏠🌲🏠</div>';
+  $('#wwChatForm').addEventListener('submit', e => { e.preventDefault(); const i = $('#wwChatIn'); const v = wwClean(i.value); if (!v || i.disabled) return; myAct({ t: 'chat', v }); i.value = ''; });
   const dm = $('#dmArt'); dm.appendChild(dmTile(6, 6, 'v')); dm.appendChild(dmTile(3, 5, 'v')); dm.appendChild(dmTile(1, 4, 'v'));
 })();
 
 /* ================== BOOT ================== */
 function maybeJoinFromHash() {
-  const m = /^#((bj|pk|rl|dm|cn|bg|sh)-[a-z0-9]{3,12})$/.exec(location.hash || ''); if (!m || !P) return false;
+  const m = /^#((bj|pk|rl|dm|cn|bg|sh|ww)-[a-z0-9]{3,12})$/.exec(location.hash || ''); if (!m || !P) return false;
   if (APP.code === m[1]) return true;
   joinTable(m[1], false); return true;
 }

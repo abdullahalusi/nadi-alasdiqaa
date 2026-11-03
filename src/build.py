@@ -4,9 +4,9 @@ import os, re
 R = os.path.dirname(os.path.abspath(__file__)); P = os.path.join(R, 'parts') + '/'
 css = open(P+'base.css').read() + open(P+'extra.css').read()
 js = open(P+'standalone.js').read() + "\n'use strict';\n" + open(P+'core.js').read().replace("'use strict';\n", "", 1)
-for f in ['fw.js','bj.js','rl.js','pk.js','dm.js','cnwords.js','cn.js','bg.js','sh.js','boot.js']: js += '\n' + open(P+f).read()
+for f in ['fw.js','bj.js','rl.js','pk.js','dm.js','cnwords.js','cn.js','bg.js','sh.js','ww.js','boot.js']: js += '\n' + open(P+f).read()
 js = re.sub(r"const GAME_URL = '[^']*';", "const GAME_URL = location.origin + location.pathname;", js)
-body = '<div class="bgl menu"></div><div class="bgl bj"></div><div class="bgl pk"></div><div class="bgl rl"></div><div class="bgl dm"></div><div class="bgl cn"></div><div class="bgl bgb"></div><div class="bgl sh"></div>\n<div class="bgsuits" id="bgsuits"></div>\n<div id="toasts"></div>\n' + open(P+'auth.html').read() + open(P+'body.html').read()
+body = '<div class="bgl menu"></div><div class="bgl bj"></div><div class="bgl pk"></div><div class="bgl rl"></div><div class="bgl dm"></div><div class="bgl cn"></div><div class="bgl bgb"></div><div class="bgl sh"></div><div class="bgl ww"></div>\n<div class="bgsuits" id="bgsuits"></div>\n<div id="toasts"></div>\n' + open(P+'auth.html').read() + open(P+'body.html').read()
 html = f'''<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
