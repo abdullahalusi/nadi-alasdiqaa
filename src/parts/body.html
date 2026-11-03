@@ -1,0 +1,145 @@
+<!-- MENU -->
+<section class="screen" id="scr-menu">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="profile">
+        <div class="avbig" id="mAv">🦁</div>
+        <div>
+          <div class="pname" id="mName">—</div>
+          <div class="hostbadge">جلسة مؤقتة</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn ghost sm" id="btnEdit">✏️ تغيير الاسم</button>
+        <button class="ibtn" id="btnMute1" title="الصوت">🔊</button>
+      </div>
+    </div>
+    <div class="hero">
+      <div class="logo">نادي الأصدقاء</div>
+      <div class="sub">اختر لعبتك، أنشئ طاولة، وأرسل الرابط لأصدقائك</div>
+    </div>
+    <div class="games">
+      <button class="tile bj" id="tile-bj"><span class="tag">♠ ورق</span><div class="art"><div class="fan" id="fanArt"></div></div><h3>بلاك جاك 21</h3><p>ضد الموزّع وحدك أو مع حتى 6 أصدقاء</p></button>
+      <button class="tile pk" id="tile-pk"><span class="tag">♦ ورق</span><div class="art"><div class="pkart" id="pkArt"></div></div><h3>بوكر تكساس</h3><p>راهن واخدع أصدقاءك أو اللاعبين الآليين</p></button>
+      <button class="tile rl" id="tile-rl"><span class="tag">🎡 حظ</span><div class="art" id="rlArt"></div><h3>روليت</h3><p>عجلة أوروبية، راهنوا معاً على نفس الدورة</p></button>
+      <button class="tile cnt" id="tile-cn"><span class="tag">🕵️ كلمات</span><div class="art"><div class="cnart" id="cnArt"></div></div><h3>كود نيمز</h3><p>فريقان، قائد يلمّح بكلمة، وأكثر من 670 كلمة عربية</p></button>
+      <button class="tile tbg" id="tile-bg"><span class="tag">🏙️ عقارات</span><div class="art"><div class="bgart" id="bgArt"></div></div><h3>لعبة بغداد</h3><p>اشترِ أحياء بغداد من مدينة الصدر إلى الجادرية</p></button>
+      <button class="tile dm" id="tile-dm"><span class="tag">🁫 أحجار</span><div class="art"><div class="dmart" id="dmArt"></div></div><h3>دومينو</h3><p>سحب أو بلوك، من 2 إلى 4 لاعبين</p></button>
+    </div>
+  </div>
+</section>
+
+<!-- LOBBY (generic) -->
+<section class="screen" id="scr-lobby">
+  <div class="wrap lobby">
+    <div class="lhead">
+      <button class="ibtn" id="lobBack" title="رجوع">→</button>
+      <h2 id="lobTitle">—</h2>
+    </div>
+    <div class="modes">
+      <button class="mode" id="mSolo"></button>
+      <button class="mode" id="mHost"></button>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <h4>⚙️ إعدادات اللعبة</h4>
+      <div class="setgrid" id="lobbySettings"></div>
+      <div class="note" style="text-align:right">تُطبَّق على اللعب الفردي أو الطاولة التي تنشئها، ويمكنك تغييرها من داخل الطاولة بزر ⚙️.</div>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <h4>🔑 انضم إلى طاولة صديق</h4>
+      <form class="joinrow" id="joinForm">
+        <input id="joinCode" placeholder="bj-xxxxx" autocomplete="off">
+        <button class="btn blue" type="submit">انضم</button>
+      </form>
+    </div>
+    <div class="panel rules lobrules" id="lobRules"></div>
+  </div>
+</section>
+
+<!-- TABLE -->
+<section class="screen" id="scr-table">
+  <div class="tbar">
+    <button class="ibtn" id="btnLeave" title="خروج">→</button>
+    <div class="tinfo">
+      <span class="tn" id="tblName">طاولة</span>
+      <button class="pill" id="btnInvite">🔗 ادعُ أصدقاءك</button>
+      <div class="peerbar" id="peerbar"></div>
+    </div>
+    <button class="ibtn" id="btnSettings" title="إعدادات المضيف" style="display:none">⚙️</button>
+    <div class="mychips"><span class="coin" id="hudIcon"></span><b id="tChips">0</b></div>
+    <button class="ibtn" id="btnMute2" title="الصوت">🔊</button>
+  </div>
+  <div class="stages">
+    <!-- BLACKJACK -->
+    <div class="stage" id="st-bj">
+      <div class="felt-wrap">
+        <div class="rimwood"><div class="felt" id="felt">
+          <div class="shoe" id="shoe"></div>
+          <div class="tray"></div>
+          <svg class="arc" viewBox="0 0 640 120"><path id="arcP" d="M30,20 Q320,130 610,20" fill="none"/><text><textPath href="#arcP" startOffset="50%" text-anchor="middle">البلاك جاك يدفع 3 مقابل 2 ✦ الموزّع يقف على 17</textPath></text></svg>
+          <div class="dealer"><div class="dlabel">الموزّع</div><div class="hand" id="dealerHand"></div><div class="val" id="dealerVal"></div></div>
+          <div class="center-msg" id="centerMsg"></div>
+          <div id="seats"></div>
+        </div></div>
+      </div>
+    </div>
+    <!-- POKER -->
+    <div class="stage" id="st-pk">
+      <div class="pk-wrap">
+        <div class="pk-table" id="pkTable">
+          <div class="pk-felt"></div>
+          <div class="shoe pkdeck"></div>
+          <div class="pk-center"><div class="pk-pot" id="pkPot"></div><div class="pk-board hand" id="pkBoard"></div><div class="pk-win" id="pkWin"></div><div class="pk-msg" id="pkMsg"></div></div>
+          <div id="pkSeats"></div>
+        </div>
+      </div>
+    </div>
+    <!-- ROULETTE -->
+    <div class="stage" id="st-rl">
+      <div class="rl-wrap">
+        <div class="rl-top">
+          <div class="rl-wheel" id="rlWheel"></div>
+          <div class="rl-side"><div class="rl-msg" id="rlMsg"></div><div class="rl-hist" id="rlHist"></div><div class="rl-players" id="rlPlayers"></div></div>
+        </div>
+        <div class="rl-board" id="rlBoard"></div>
+      </div>
+    </div>
+    <!-- DOMINO -->
+    <div class="stage" id="st-dm">
+      <div class="dm-wrap">
+        <div class="dm-opps" id="dmOpps"></div>
+        <div class="dm-table"><div class="dm-info" id="dmInfo"></div><div class="dm-chain" id="dmChain"></div><div class="dm-msg" id="dmMsg"></div></div>
+        <div class="dm-mebar" id="dmMeBar"></div>
+        <div class="dm-hand" id="dmHand"></div>
+      </div>
+    </div>
+    <!-- CODENAMES -->
+    <div class="stage" id="st-cn">
+      <div class="cn-wrap">
+        <div id="cnTeams"></div>
+        <div class="cn-main">
+          <div class="cn-msg" id="cnMsg"></div>
+          <div class="cnclue" id="cnClue"></div>
+          <div class="cn-grid" id="cnGrid"></div>
+          <div class="cn-bench" id="cnBench"></div>
+          <div class="cn-log" id="cnLog"></div>
+        </div>
+      </div>
+    </div>
+    <!-- BAGHDAD -->
+    <div class="stage" id="st-bg">
+      <div class="bg-wrap">
+        <div class="bg-boardwrap"><div class="bg-board" id="bgBoard"></div></div>
+        <div class="bg-side">
+          <div class="panel bgpanel"><h4>👥 اللاعبون</h4><div id="bgPlayers"></div></div>
+          <div class="panel bgpanel"><h4>🏠 أملاكي</h4><div id="bgMine"></div></div>
+          <div class="panel bgpanel"><h4>📜 آخر الأحداث</h4><div id="bgLog" class="bglog"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="banner" id="banner"></div>
+  </div>
+  <div class="controls" id="controls"></div>
+</section>
+
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
