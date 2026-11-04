@@ -765,3 +765,25 @@ body[data-theme=ww] .bgl.ww{opacity:1}
   .ww-bottom{grid-template-columns:1fr}
   .ww-news .big{font-size:32px}.ww-news b{font-size:15px}
 }
+/* ---- Baghdad: buildings drawn on the land ---- */
+.bsq .hs{position:absolute!important;inset:auto!important;transform:none!important;flex-direction:row!important;pointer-events:none;z-index:3;display:block}
+.bsq.s-b .hs{left:6%!important;right:6%!important;top:21%!important;height:34%}
+.bsq.s-t .hs{left:6%!important;right:6%!important;bottom:21%!important;height:34%}
+.bsq.s-l .hs{right:21%!important;top:8%!important;bottom:8%!important;width:36%}
+.bsq.s-r .hs{left:21%!important;top:8%!important;bottom:8%!important;width:36%}
+.bsq .hs svg{width:100%;height:100%;display:block;filter:drop-shadow(0 1.5px 1.5px rgba(0,0,0,.45));animation:bgBldIn .5s cubic-bezier(.3,1.6,.5,1)}
+.bsq .hs svg.tower{height:118%;margin-top:-12%}
+.bsq .hs .hn{position:absolute;top:-3px;left:-3px;min-width:13px;height:13px;padding:0 2px;border-radius:7px;background:#16a34a;color:#fff;font:900 9px/13px system-ui;text-align:center;box-shadow:0 0 0 1.5px #fff}
+.bsq.built .lm{opacity:0}
+.bsq.built .bin{justify-content:flex-end;padding-bottom:3px}
+.bsq.s-t.built .bin{justify-content:flex-start;padding-top:3px}
+.bsq.built .pr{display:none}
+@keyframes bgBldIn{0%{transform:translateY(-40%) scale(.3);opacity:0}100%{transform:none;opacity:1}}
+.bgwhy{background:rgba(255,193,7,.14);border:1px solid rgba(255,193,7,.45);color:#ffe08a;border-radius:10px;padding:8px 10px;margin:8px 0 0;font-size:13px;font-weight:700;text-align:center}
+#bgMg .btn[disabled]{opacity:.45;filter:grayscale(.6);cursor:not-allowed}
+.bsq .hs .hn{top:auto;bottom:-2px;left:-4px}
+.bsq.s-l.built .hs{right:22%!important;left:4%!important;width:auto;top:4%!important;bottom:auto!important;height:50%}
+.bsq.s-r.built .hs{left:22%!important;right:4%!important;width:auto;top:4%!important;bottom:auto!important;height:50%}
+.bsq.s-l.built .hs svg.tower,.bsq.s-r.built .hs svg.tower{height:110%;margin-top:-4%}
+.bsq.s-b.built .hs{top:22%!important;height:38%}.bsq.s-t.built .hs{bottom:22%!important;height:38%}
+.bsq.s-b.built .bin{justify-content:flex-end}.bsq.s-t.built .bin{justify-content:flex-start}

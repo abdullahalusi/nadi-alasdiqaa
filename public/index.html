@@ -1039,6 +1039,28 @@ body[data-theme=ww] .bgl.ww{opacity:1}
   .ww-bottom{grid-template-columns:1fr}
   .ww-news .big{font-size:32px}.ww-news b{font-size:15px}
 }
+/* ---- Baghdad: buildings drawn on the land ---- */
+.bsq .hs{position:absolute!important;inset:auto!important;transform:none!important;flex-direction:row!important;pointer-events:none;z-index:3;display:block}
+.bsq.s-b .hs{left:6%!important;right:6%!important;top:21%!important;height:34%}
+.bsq.s-t .hs{left:6%!important;right:6%!important;bottom:21%!important;height:34%}
+.bsq.s-l .hs{right:21%!important;top:8%!important;bottom:8%!important;width:36%}
+.bsq.s-r .hs{left:21%!important;top:8%!important;bottom:8%!important;width:36%}
+.bsq .hs svg{width:100%;height:100%;display:block;filter:drop-shadow(0 1.5px 1.5px rgba(0,0,0,.45));animation:bgBldIn .5s cubic-bezier(.3,1.6,.5,1)}
+.bsq .hs svg.tower{height:118%;margin-top:-12%}
+.bsq .hs .hn{position:absolute;top:-3px;left:-3px;min-width:13px;height:13px;padding:0 2px;border-radius:7px;background:#16a34a;color:#fff;font:900 9px/13px system-ui;text-align:center;box-shadow:0 0 0 1.5px #fff}
+.bsq.built .lm{opacity:0}
+.bsq.built .bin{justify-content:flex-end;padding-bottom:3px}
+.bsq.s-t.built .bin{justify-content:flex-start;padding-top:3px}
+.bsq.built .pr{display:none}
+@keyframes bgBldIn{0%{transform:translateY(-40%) scale(.3);opacity:0}100%{transform:none;opacity:1}}
+.bgwhy{background:rgba(255,193,7,.14);border:1px solid rgba(255,193,7,.45);color:#ffe08a;border-radius:10px;padding:8px 10px;margin:8px 0 0;font-size:13px;font-weight:700;text-align:center}
+#bgMg .btn[disabled]{opacity:.45;filter:grayscale(.6);cursor:not-allowed}
+.bsq .hs .hn{top:auto;bottom:-2px;left:-4px}
+.bsq.s-l.built .hs{right:22%!important;left:4%!important;width:auto;top:4%!important;bottom:auto!important;height:50%}
+.bsq.s-r.built .hs{left:22%!important;right:4%!important;width:auto;top:4%!important;bottom:auto!important;height:50%}
+.bsq.s-l.built .hs svg.tower,.bsq.s-r.built .hs svg.tower{height:110%;margin-top:-4%}
+.bsq.s-b.built .hs{top:22%!important;height:38%}.bsq.s-t.built .hs{bottom:22%!important;height:38%}
+.bsq.s-b.built .bin{justify-content:flex-end}.bsq.s-t.built .bin{justify-content:flex-start}
 </style>
 </head>
 <body data-theme="">
@@ -3147,7 +3169,7 @@ class BGEngine extends BaseEngine {
     const S = this.S; if (S.ph === 'play') return; this.syncBots();
     S.seats = S.seats.filter(s => s.bot || !s.out); if (S.seats.length < 2) return;
     S.round++; S.seats.forEach(s => Object.assign(s, { ch: this.cfg.start, pos: 0, jail: 0, jc: 0, bk: 0 }));
-    S.own = Array(40).fill(null); S.pot = 0; S.rnd = 1; S.log = []; S.rank = null; S.card = null; S.offer = -1; S.anim = null;
+    S.bm = this.cfg.bmode === 0 ? 0 : 1; S.own = Array(40).fill(null); S.pot = 0; S.rnd = 1; S.log = []; S.rank = null; S.card = null; S.offer = -1; S.anim = null;
     this.decks = { ch: pkShuffle(BG_CH.map((_, i) => i)), cc: pkShuffle(BG_CC.map((_, i) => i)) };
     S.ph = 'play'; S.turn = Math.floor(Math.random() * S.seats.length);
     this.log('🏁 بدأت لعبة بغداد! بالتوفيق للجميع'); this.beginTurn();
@@ -3247,13 +3269,9 @@ class BGEngine extends BaseEngine {
     this.commit();
   }
   /* ---------- property management ---------- */
-  canBuild(s, i) {
-    const S = this.S, sq = BG_SQ[i], o = S.own[i]; if (!o || o[0] !== s.sid || sq.t !== 'p' || o[1] >= 5) return false;
-    const g = bgGroup(sq.g); if (!g.every(j => S.own[j] && S.own[j][0] === s.sid && !S.own[j][2])) return false;
-    const mn = Math.min(...g.map(j => S.own[j][1])); return o[1] <= mn && s.ch >= BG_GROUPS[sq.g].h;
-  }
-  canSell(s, i) { const S = this.S, sq = BG_SQ[i], o = S.own[i]; if (!o || o[0] !== s.sid || sq.t !== 'p' || o[1] <= 0) return false; const g = bgGroup(sq.g); const mx = Math.max(...g.map(j => S.own[j][1])); return o[1] >= mx; }
-  canMort(s, i) { const S = this.S, sq = BG_SQ[i], o = S.own[i]; if (!o || o[0] !== s.sid || o[2]) return false; if (sq.t === 'p') return bgGroup(sq.g).every(j => !S.own[j] || S.own[j][1] === 0); return true; }
+  canBuild(s, i) { return !bgBuildWhy(this.S, s, i); }
+  canSell(s, i) { const S = this.S, sq = BG_SQ[i], o = S.own[i]; if (!o || o[0] !== s.sid || sq.t !== 'p' || o[1] <= 0) return false; if (S.bm !== 0) return true; const g = bgGroup(sq.g); const mx = Math.max(...g.map(j => S.own[j][1])); return o[1] >= mx; }
+  canMort(s, i) { const S = this.S, sq = BG_SQ[i], o = S.own[i]; if (!o || o[0] !== s.sid || o[2]) return false; if (sq.t === 'p') return S.bm !== 0 ? o[1] === 0 : bgGroup(sq.g).every(j => !S.own[j] || S.own[j][1] === 0); return true; }
   canUnm(s, i) { const o = this.S.own[i]; return o && o[0] === s.sid && o[2] && s.ch >= Math.ceil(BG_SQ[i].pr / 2 * 1.1); }
   manage(s, a, i) {
     const S = this.S, sq = BG_SQ[i];
@@ -3396,13 +3414,29 @@ function bgDeed(i, S) {
   if (o && S) { const ow = S.seats.find(s => s.sid === o[0]); h += `<div class="downer" style="--oc:${bgOwnerColor(S, o)}">${ow ? ow.a + ' ' + ow.n : '—'}${o[1] ? ' • ' + (o[1] === 5 ? '🏢 برج' : '🏠'.repeat(o[1])) : ''}${o[2] ? ' • مرهون' : ''}</div>`; }
   return h + '</div>';
 }
+function bgBldSvg(k) {
+  if (k === 5) return `<svg viewBox="0 0 40 56" class="tower"><defs><linearGradient id="bgTw" x1="0" x2="1"><stop offset="0" stop-color="#c62828"/><stop offset=".55" stop-color="#ef5350"/><stop offset="1" stop-color="#8e1b1b"/></linearGradient></defs><ellipse cx="20" cy="54" rx="17" ry="2.5" fill="rgba(0,0,0,.3)"/><rect x="8" y="10" width="24" height="44" rx="1.5" fill="url(#bgTw)" stroke="#5c0f0f" stroke-width="1.2"/><path d="M8 10 L20 2 L32 10Z" fill="#ffd54f" stroke="#8d6e00" stroke-width="1"/><line x1="20" y1="2" x2="20" y2="-3" stroke="#555" stroke-width="1.2"/>${[0, 1, 2, 3, 4, 5].map(r => [0, 1, 2].map(c => `<rect x="${11 + c * 7}" y="${14 + r * 6.4}" width="4" height="4" rx=".6" fill="#ffe9a8"/>`).join('')).join('')}<rect x="16.5" y="47" width="7" height="7" fill="#4e1010"/></svg>`;
+  const one = (x, s) => `<g transform="translate(${x} ${22 - 22 * s}) scale(${s})"><path d="M2 14 L14 3 L26 14Z" fill="#d84315" stroke="#6d1f05" stroke-width="1.2" stroke-linejoin="round"/><rect x="5" y="13" width="18" height="13" fill="#2e9d4f" stroke="#0f4d22" stroke-width="1.2"/><rect x="12" y="18" width="5" height="8" fill="#7a4a1a"/><rect x="7.5" y="16" width="3.5" height="3.5" fill="#fff3b0"/><rect x="18" y="16" width="3.5" height="3.5" fill="#fff3b0"/></g>`;
+  const pos = { 1: [[6, 1]], 2: [[0, .85], [14, .85]], 3: [[-2, .7], [9, .78], [20, .7]], 4: [[-3, .62], [6, .7], [15, .7], [24, .62]] }[k];
+  return `<svg viewBox="-4 -2 48 32" class="houses"><ellipse cx="20" cy="27" rx="21" ry="2.4" fill="rgba(0,0,0,.25)"/>${pos.map(([x, s]) => one(x, s)).join('')}</svg><b class="hn">${k}</b>`;
+}
+function bgBuildWhy(S, s, i) {
+  const sq = BG_SQ[i], o = S.own[i]; if (!s || !o || o[0] !== s.sid) return 'هذه الأرض ليست لك';
+  if (sq.t !== 'p') return 'لا يمكن البناء على هذا النوع من العقارات';
+  if (o[1] >= 5) return 'فيها برج بالفعل — أعلى بناء ممكن';
+  if (o[2]) return 'الأرض مرهونة — فكّ الرهن أولاً';
+  if (S.bm === 0) { const g = bgGroup(sq.g); if (!g.every(j => S.own[j] && S.own[j][0] === s.sid)) return 'يجب أن تملك كل أحياء هذا اللون أولاً'; if (g.some(j => S.own[j][2])) return 'فكّ رهن أحياء هذا اللون أولاً'; if (o[1] > Math.min(...g.map(j => S.own[j][1]))) return 'ابنِ بالتساوي — ابنِ على الأحياء الأخرى من نفس اللون أولاً'; }
+  if (s.ch < BG_GROUPS[sq.g].h) return 'لا تملك نقوداً كافية للبناء';
+  return '';
+}
 function bgInfo(i) {
   const S = APP.S; if (!S) return; const me = mySeat(S), o = S.own[i], mine = o && me && o[0] === me.sid, myTurn = me && S.seats[S.turn] === me && ['roll', 'end', 'debt', 'jail'].includes(S.step) && S.ph === 'play';
   modal(`<div class="bginfo">${bgDeed(i, S)}</div><div class="mbtns" id="bgMg"></div><div class="mbtns"><button class="btn ghost" id="bgX">إغلاق</button></div>`, b => {
     b.querySelector('#bgX').onclick = closeModal;
+    if (mine && !myTurn && BG_SQ[i].t === 'p') b.querySelector('#bgMg').before(el('div', 'bgwhy', '⏳ تستطيع البناء والرهن في دورك فقط'));
     if (mine && myTurn) { const m = b.querySelector('#bgMg'), sq = BG_SQ[i];
-      const add = (t, cls, act) => { const x = el('button', 'btn sm ' + cls, t); x.onclick = () => { myAct({ t: act, v: i }); closeModal(); }; m.appendChild(x); };
-      if (sq.t === 'p' && !o[2] && o[1] < 5) add(`🏗️ ابنِ (${bgM(BG_GROUPS[sq.g].h)})`, 'green', 'build');
+      const add = (t, cls, act, why) => { const x = el('button', 'btn sm ' + cls, t); if (why) { x.disabled = true; x.title = why; const n = el('div', 'bgwhy', '⚠️ ' + why); m.before(n); } x.onclick = () => { myAct({ t: act, v: i }); closeModal(); }; m.appendChild(x); };
+      if (sq.t === 'p' && o[1] < 5) { const why = bgBuildWhy(S, me, i); add(`🏗️ ${o[1] === 4 ? 'ابنِ برجاً' : 'ابنِ بيتاً'} (${bgM(BG_GROUPS[sq.g].h)})`, 'green', 'build', why); }
       if (sq.t === 'p' && o[1] > 0) add(`بع بيتاً (+${bgM(BG_GROUPS[sq.g].h / 2)})`, 'ghost', 'sell');
       if (!o[2]) add(`🏦 ارهن (+${bgM(sq.pr / 2)})`, 'blue', 'mort'); else add(`فكّ الرهن (${bgM(Math.ceil(sq.pr / 2 * 1.1))})`, 'gold', 'unm');
     }
@@ -3459,12 +3493,13 @@ GAMES.bg = {
     { k: 'turn', label: '⏱️ وقت الدور لكل لاعب', d: 45, lo: 0, hi: 300, opts: [20, 30, 45, 60, 90, 0], fmt: secs },
     { k: 'bots', label: '🤖 عدد اللاعبين الآليين', d: 3, lo: 0, hi: 5, opts: [0, 1, 2, 3, 4, 5], fmt: v => v ? v : 'بدون' },
     { k: 'rounds', label: '🔁 عدد الجولات', d: 0, lo: 0, hi: 200, opts: [0, 10, 15, 20, 30, 50], fmt: v => v ? v + ' جولة ثم يفوز الأغنى' : 'حتى يفلس الجميع' },
+    { k: 'bmode', label: '🏗️ شرط بناء البيوت والأبراج', d: 1, lo: 0, hi: 1, opts: [1, 0], fmt: v => v ? 'على أي أرض تملكها' : 'بعد امتلاك كل أحياء اللون (كلاسيكي)' },
     { k: 'pot', label: '🌴 جائزة كورنيش أبو نؤاس', d: 1, lo: 0, hi: 1, opts: [1, 0], fmt: v => v ? 'الضرائب تُجمع للجائزة' : 'بدون جائزة' },
   ],
   rules: `<h4>📜 القوانين</h4><ul>
     <li>ارمِ النرد وتنقّل في أحياء بغداد. اشترِ الحي الذي تقف عليه، ومن يقف على أملاكك يدفع لك إيجاراً.</li>
     <li>الأسعار ترتفع من الأحياء الشعبية (مدينة الصدر، الشعلة) إلى الراقية (المنصور، الجادرية).</li>
-    <li>إذا امتلكت كل أحياء اللون الواحد يتضاعف الإيجار، وتستطيع بناء بيوت ثم برج.</li>
+    <li>في دورك اضغط على أرضك ثم «ابنِ»: حتى 4 بيوت ثم برج، وكل بناء يرفع الإيجار كثيراً. (المضيف يختار: البناء على أي أرض تملكها، أو بعد امتلاك كل أحياء اللون).</li><li>إذا امتلكت كل أحياء اللون الواحد يتضاعف إيجار الأرض الفارغة.</li>
     <li>الكراجات والمطار: كلما امتلكت أكثر زاد الإيجار. المولدة والإسالة: الإيجار حسب النرد.</li>
     <li>الدبل يمنحك رمية إضافية، و3 دبل متتالية تأخذك إلى السجن.</li>
     <li>إذا نفدت نقودك: ارهن أو بع بيوتاً، وإلا تعلن إفلاسك. آخر من يبقى، أو الأغنى عند انتهاء الجولات، يفوز.</li></ul>`,
@@ -3485,7 +3520,7 @@ GAMES.bg = {
     b.querySelectorAll('.bsq').forEach(e => {
       const i = +e.dataset.i, o = S.own[i], oc = bgOwnerColor(S, o);
       e.classList.toggle('owned', !!o); e.classList.toggle('mort', !!(o && o[2])); e.style.setProperty('--oc', oc || 'transparent');
-      const hk = o ? o[1] : 0, hs = e.querySelector('.hs'); if (hs.dataset.k !== String(hk)) { hs.dataset.k = hk; hs.innerHTML = hk === 5 ? '<i class="hotel"></i>' : '<i class="house"></i>'.repeat(hk); }
+      const hk = o ? o[1] : 0, hs = e.querySelector('.hs'); if (hs.dataset.k !== String(hk)) { hs.dataset.k = hk; hs.innerHTML = hk ? bgBldSvg(hk) : ''; e.classList.toggle('built', hk > 0); }
       e.classList.toggle('here', S.ph === 'play' && S.seats[S.turn] && S.seats[S.turn].pos === i && S.step !== 'move');
     });
     if (BGV.animId === 'init') BGV.animId = S.anim ? S.anim.id : null; else if (S.anim && BGV.animId !== S.anim.id) bgAnimate(S);
